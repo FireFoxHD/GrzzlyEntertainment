@@ -2,3 +2,4 @@
 /server/
 /models/
 /multiThreadServer/
+/hibernate.cfg.xml

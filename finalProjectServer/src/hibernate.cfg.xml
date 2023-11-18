@@ -5,6 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection settings -->
+        <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/grizzlyequipment</property>
         <property name="hibernate.connection.username">root</property>
@@ -20,7 +21,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mapping annotated classes -->
-        <mapping class="src/Event"/>
+        <mapping class="models.com.Event"/>
 
         <!-- Other settings (if needed) -->
     </session-factory>

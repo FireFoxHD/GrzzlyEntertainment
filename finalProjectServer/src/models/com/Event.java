@@ -14,12 +14,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import factories.SessionFactoryBuilder;
 
-@Entity
+@Entity(name = "event")
 @Table(name = "event")
 public class Event implements Serializable {
 	/**
@@ -98,13 +99,23 @@ public class Event implements Serializable {
 	}
 
 	public void addEventToFile() {
-		Session session= SessionFactoryBuilder
-				.getSessionFactory()
-				.getCurrentSession();
-		Transaction transaction = session.beginTransaction();
-		session.save(this);
-		transaction.commit();
-		session.clear();
+		Session session=null;
+		try {
+			session= SessionFactoryBuilder
+					.getSessionFactory()
+					.getCurrentSession();
+			Transaction transaction = session.beginTransaction();
+			session.save(this);
+			transaction.commit();
+			//session.clear();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+		    if (session != null && session.isOpen()) {
+		        session.close(); // Close the session only if it's open
+		    }
+		}
 	}
 	public void update() {
 		Event event = new Event();
