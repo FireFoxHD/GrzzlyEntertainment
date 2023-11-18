@@ -1,5 +1,7 @@
 package server;
 
+
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,6 +17,9 @@ import java.util.Queue;
 
 import javax.swing.JOptionPane;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+
 import models.com.Customer;
 import models.com.Employee;
 import models.com.Equipment;
@@ -25,6 +30,7 @@ import models.com.Transaction;
 
 public class AppServer {
 
+	private static Logger serverLogger =(Logger) LogManager.getLogger(AppServer.class.getName());
 	private static Connection dbConn = null;
 	private ServerSocket serverSocket;
 	private Socket connectionSocket;
@@ -44,6 +50,7 @@ public class AppServer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 
@@ -54,6 +61,7 @@ public class AppServer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 
@@ -63,9 +71,11 @@ public class AppServer {
 			try {
 				dbConn = DriverManager.getConnection(url, "root", "");
 				JOptionPane.showMessageDialog(null, "DB connected");
+				serverLogger.info("No errors");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "DB not connected");
+				serverLogger.error(e);
 			}
 		}
 		return dbConn;
@@ -80,6 +90,7 @@ public class AppServer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 
 	}
@@ -98,8 +109,10 @@ public class AppServer {
 			}
 		} catch (IOException ioe) {
 			// ideally you want to save errors to a log file
+			serverLogger.error(ioe);
 			ioe.printStackTrace();
 		} catch (SQLException e) {
+			serverLogger.error(e);
 			e.printStackTrace();
 		}
 	}
