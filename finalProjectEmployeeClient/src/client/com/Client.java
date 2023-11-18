@@ -18,6 +18,9 @@ public class Client {
 	private String action = "";
 	private boolean isLogin;
 	
+	//need to log client side the minute you see this
+	
+	
 	public boolean isLoginStatus() {
 		return isLogin;
 	}

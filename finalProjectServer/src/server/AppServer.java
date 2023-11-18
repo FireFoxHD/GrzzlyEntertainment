@@ -1,7 +1,5 @@
 package server;
 
-
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -20,14 +19,15 @@ import javax.swing.JOptionPane;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import models.com.Customer;
 import models.com.Employee;
 import models.com.Equipment;
+import models.com.EquipmentStock;
 import models.com.Event;
+import models.com.EventSchedule;
 import models.com.Message;
 import models.com.RentalRequest;
-import models.com.Transaction;
+import models.com.TransactionClass;
 
 public class AppServer {
 
@@ -180,7 +180,8 @@ public class AppServer {
 	void addEquipmentToFile(Equipment equipment) {
 		String sql = "INSERT INTO grizzlyequipment.equipment(equipmentID,equipmentName,equipmentCategory,isAvailable)"
 				+ " VALUES('" + equipment.getEquipmentID() + "','" + equipment.getEquipmentName() + "','"
-				+ equipment.getEquipmentCategory() + "','" + equipment.isAvailabilityStatus() + "','" +equipment.getPrice()+"');";
+				+ equipment.getEquipmentCategory() + "','" + equipment.isAvailabilityStatus() + "','"
+				+ equipment.getPrice() + "');";
 		try {
 			stmt = dbConn.createStatement();
 
@@ -193,6 +194,7 @@ public class AppServer {
 			// ideally you want to save errors to a log file
 			ioe.printStackTrace();
 		} catch (SQLException e) {
+			serverLogger.info("Issue with SQL");
 			e.printStackTrace();
 		}
 	}
@@ -259,7 +261,7 @@ public class AppServer {
 		return messObj;
 	}
 
-	public void addTransactionToFile(Transaction transaction) {
+	public void addTransactionToFile(TransactionClass transaction) {
 		String sql = "INSERT INTO grizzlyequipment.transaction(transactionId,customerID,requestID,transactionDate,amountPaid)"
 				+ " VALUES('" + transaction.getTransactionID() + "','" + transaction.getCustomerID() + "','"
 				+ transaction.getRequestID() + "','" + transaction.getTransactionDate() + "','"
@@ -280,8 +282,8 @@ public class AppServer {
 		}
 	}
 
-	private Transaction findTransactionById(String id) {
-		Transaction tranObj = new Transaction();
+	private TransactionClass findTransactionById(String id) {
+		TransactionClass tranObj = new TransactionClass();
 		String query = "SELECT * FROM grizzlyequipment.transaction WHERE transactionID =" + id;
 		try {
 			stmt = dbConn.createStatement();
@@ -342,7 +344,7 @@ public class AppServer {
 		}
 		return tranObj;
 	}
-	
+
 	private Event findEventById(String id) {
 		// TODO Auto-generated method stub
 		Event eventObj = new Event();
@@ -354,7 +356,6 @@ public class AppServer {
 				eventObj.setEventID(result.getString(1));
 				eventObj.setEventName(result.getString(2));
 				eventObj.setEventDate(result.getString("rentalDate"));
-				
 
 			}
 		} catch (SQLException e) {
@@ -364,26 +365,6 @@ public class AppServer {
 		return eventObj;
 	}
 
-	private void addEventToFile(Event eventObj) {
-		// TODO Auto-generated method stub
-		String sql = "INSERT INTO grizzlyequipment.event(eventID,eventName,eventDate)"
-				+ " VALUES('" +eventObj.getEventID() + "','" + eventObj.getEventName() + "','"
-				+ eventObj.getEventDate() +  "');";
-		try {
-			stmt = dbConn.createStatement();
-
-			if ((stmt.executeUpdate(sql) == 1)) {
-				objOs.writeObject(true);
-			} else {
-				objOs.writeObject(false);
-			}
-		} catch (IOException ioe) {
-			// ideally you want to save errors to a log file
-			ioe.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	private void waitForRequest() {
 		String action = "";
@@ -391,8 +372,11 @@ public class AppServer {
 		Employee empObj = null;
 		Customer custObj = null;
 		Equipment equObj = null;
+		List<EquipmentStock> equipmentStockObj;
 		Message messObj = null;
-		Transaction tranObj = null;
+		TransactionClass tranObj = null;
+		EventSchedule eventScheduleObj=null;
+		
 		RentalRequest rentalReqObj = null;
 		Event eventObj;
 
@@ -410,32 +394,45 @@ public class AppServer {
 						empObj = (Employee) objIs.readObject();
 						this.addEmployeeToFile(empObj);
 						objOs.writeObject(true);
-					} else if (action.equalsIgnoreCase("Add Customer")) {
+					}if (action.equalsIgnoreCase("Add Customer")) {
 						custObj = (Customer) objIs.readObject();
 						this.addCustomerToFile(custObj);
 						objOs.writeObject(true);
-					} else if (action.equalsIgnoreCase("Add Equipment")) {
+					}if (action.equalsIgnoreCase("Add Equipment")) {
 						equObj = (Equipment) objIs.readObject();
 						this.addEquipmentToFile(equObj);
 						objOs.writeObject(true);
-					} else if (action.equalsIgnoreCase("Add Message")) {
+					}if (action.equalsIgnoreCase("Add Message")) {
 						messObj = (Message) objIs.readObject();
 						this.addMessage(messObj);
 						objOs.writeObject(true);
-					} else if (action.equalsIgnoreCase("Add Transaction")) {
-						tranObj = (Transaction) objIs.readObject();
+					}if (action.equalsIgnoreCase("Add Transaction")) {
+						tranObj = (TransactionClass) objIs.readObject();
 						this.addTransactionToFile(tranObj);
 						objOs.writeObject(true);
-					} else if (action.equalsIgnoreCase("Add Rental Request")) {
+					}if (action.equalsIgnoreCase("Add Rental Request")) {
 						rentalReqObj = (RentalRequest) objIs.readObject();
 						this.addRentalRequestToFile(rentalReqObj);
 						objOs.writeObject(true);
-					} else if (action.equalsIgnoreCase("Add Event")) {
-						eventObj = (Event) objIs.readObject();
-						this.addEventToFile(eventObj);
+					}if (action.equalsIgnoreCase("Add Event")) {
+						eventObj = new Event();
+						eventObj.addEventToFile();
+						objOs.writeObject(true);
+					}if (action.equalsIgnoreCase("Update Event")) {
+						eventObj = new Event();
+						eventObj.update();
 						objOs.writeObject(true);
 					}
-
+					if (action.equalsIgnoreCase("Delete Event")) {
+						eventObj = new Event();
+						eventObj.deleteEvent();
+						objOs.writeObject(true);
+					}
+					if(action.equalsIgnoreCase("Add Equipment to Event")) {
+						eventObj = (Event) objIs.readObject();
+						this.addScheduleEquipmentsForEvent(eventScheduleObj);
+						objOs.writeObject(true);
+					}
 					if (action.equalsIgnoreCase("Find Employee")) {
 						String id = (String) objIs.readObject();
 						empObj = findEmployeeById(id);
@@ -445,30 +442,51 @@ public class AppServer {
 						String id = (String) objIs.readObject();
 						custObj = findCustomerById(id);
 						objOs.writeObject(custObj);
-					} else if (action.equalsIgnoreCase("Find Equipment")) {
+					}if (action.equalsIgnoreCase("Find Equipment")) {
 						String id = (String) objIs.readObject();
 						equObj = findEquipmentById(id);
 						objOs.writeObject(equObj);
-					} else if (action.equalsIgnoreCase("Find Message")) {
+					}if (action.equalsIgnoreCase("Find Message")) {
 						String id = (String) objIs.readObject();
 						messObj = findMessageById(id);
 						objOs.writeObject(messObj);
 					}
-
-					else if (action.equalsIgnoreCase("Find Transaction")) {
+					if (action.equalsIgnoreCase("Find Transaction")) {
 						String id = (String) objIs.readObject();
 						tranObj = findTransactionById(id);
 						objOs.writeObject(tranObj);
-					} else if (action.equalsIgnoreCase("Find Rental Request")) {
+					}if (action.equalsIgnoreCase("Find Rental Request")) {
 						String id = (String) objIs.readObject();
 						rentalReqObj = findRentalReqById(id);
-					}
-
-					else if (action.equals("Find Event")) {
+					}if (action.equals("Find Event")) {
 						String id = (String) objIs.readObject();
 						eventObj = findEventById(id);
 						objOs.writeObject(eventObj);
+					}if(action.equalsIgnoreCase("View Equipment Stock")) {
+						equipmentStockObj = (List<EquipmentStock>) viewEquipmnentStock();
+						objOs.writeObject(equipmentStockObj);						
+					}if(action.equalsIgnoreCase("View Equipment By Category")) {
+						equipmentStockObj = (List<EquipmentStock>) viewEquipmnentStock();
+						objOs.writeObject(equipmentStockObj);
+						
+					}if(action.equalsIgnoreCase("create Receipt")) {
+						
+					}if(action.equalsIgnoreCase("View Equipment Stock")) {
+						
+					}if(action.equalsIgnoreCase("View Equipment Stock")) {
+						
+					}if(action.equalsIgnoreCase("Create Quotation")) {
+						
+					}if(action.equalsIgnoreCase("Create Invoice")) {
+						
+					}if(action.equalsIgnoreCase("View All Message")) {
+						
+					}if(action.equalsIgnoreCase("View List Of RentalRequest")) {
+						
+					}if(action.equalsIgnoreCase("Customer SignIn")) {
+						
 					}
+					
 				} catch (ClassCastException | ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -478,6 +496,7 @@ public class AppServer {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public Queue<Equipment> viewEquipmentByCategory(String category) {
 		Queue<Equipment> listEquipment = new LinkedList<>();
@@ -514,54 +533,150 @@ public class AppServer {
 		return listEquipment;
 	}
 
-	public void viewSingleTransactionAllDetails() {
-		
-	}
-
-	//Employee methods
+	// Employee methods
 	public void createQuotation() {
-		
+
 	}
+
 	public void creatReceipt() {
-		
+
 	}
+
 	public void createInvoice() {
-		
+
 	}
+
 	public void customerSignIn() {
-		
+
 	}
+
 	public void respondToMessages() {
-		
+
 	}
-	public void ScheduleEquipmentsForEvent() {
-		
+
+	public void addScheduleEquipmentsForEvent(EventSchedule eventScheduleObj) {
+		String sql = "INSERT INTO grizzlyequipment.eventschedule(eventScheduleID"+
+				"eventID,employeeID,EquipmentID,eventDate)" 
+				+ " VALUES('"
+				+eventScheduleObj.getEventScheduleID() + "','" + eventScheduleObj.getEventID() + 
+				"','" + eventScheduleObj.getEmployeeID() +"','"+eventScheduleObj.getEquipment() +
+				"','"+eventScheduleObj.getEventDate() +"');";
+		try {
+			stmt = dbConn.createStatement();
+
+			if ((stmt.executeUpdate(sql) == 1)) {
+				objOs.writeObject(true);
+			} else {
+				objOs.writeObject(false);
+			}
+		} catch (IOException ioe) {
+			// ideally you want to save errors to a log file
+			ioe.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-	public void viewAllMessages() {
-		
+
+	public List<Message> viewAllMessages() {
+		List<Message> listMessage = new ArrayList<>();
+		String query = "SELECT * FROM message ";
+		try {
+			stmt = dbConn.createStatement();
+			result = stmt.executeQuery(query);
+
+			while (result.next()) {
+				Message messageObj = new Message();
+				messageObj.setMessageID(result.getString(1));
+				messageObj.setCustomerID(result.getString(2));
+				messageObj.setEmployeeID(result.getString(3));
+				messageObj.setMessageContent(result.getString(4));
+
+
+				listMessage.add(messageObj);
+
+			}
+
+			if (!listMessage.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Found Rental Request Found", "Rental Request Status",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Not Found!", "Status", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (SQLException e) {
+			// Handle SQLException appropriately
+			e.printStackTrace();
+		}
+		return listMessage;
+
 	}
-	public void viewEquipmnentStock() {
-		
+
+	public List<EquipmentStock> viewEquipmnentStock() {
+		List<EquipmentStock> listEquipmentStock = new ArrayList<>();
+		String query = "SELECT * FROM equipmentstock ";
+		try {
+			stmt = dbConn.createStatement();
+			result = stmt.executeQuery(query);
+
+			while (result.next()) {
+				EquipmentStock equipmentStock = new EquipmentStock();
+				equipmentStock.setEquipmentStockID(result.getString(1));
+				equipmentStock.setEquipmentID(result.getString(2));
+				equipmentStock.setQuantityAvailable(result.getInt(3));
+				equipmentStock.setEquipmentCategory(result.getString(4));
+
+
+				listEquipmentStock.add(equipmentStock);
+
+			}
+
+			if (!listEquipmentStock.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Found Rental Request Found", "Rental Request Status",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Not Found!", "Status", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (SQLException e) {
+			// Handle SQLException appropriately
+			e.printStackTrace();
+		}
+		return listEquipmentStock;
 	}
-	public List<RentalRequest> viewListOfRentalRequest(){
-		return null;
-		
+
+	public List<RentalRequest> viewListOfRentalRequest() {
+		List<RentalRequest> listRentalRequest = new ArrayList<>();
+
+		String query = "SELECT * FROM rentalrequest ";
+
+		try {
+			stmt = dbConn.createStatement();
+			result = stmt.executeQuery(query);
+
+			while (result.next()) {
+				RentalRequest rentalRequest = new RentalRequest();
+				rentalRequest.setRequestID(result.getString(1));
+				rentalRequest.setCustomerID(result.getString(2));
+				rentalRequest.setEquipmentID(result.getString(3));
+				rentalRequest.setRentalDate(result.getString(4));
+				rentalRequest.setQuotationCost(result.getDouble(5));
+				rentalRequest.setRentalStatus(result.getBoolean(5));
+
+				listRentalRequest.add(rentalRequest);
+
+			}
+
+			if (!listRentalRequest.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Found Rental Request Found", "Rental Request Status",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Not Found!", "Status", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (SQLException e) {
+			// Handle SQLException appropriately
+			e.printStackTrace();
+		}
+
+		return listRentalRequest;
+
 	}
-	//Employee methods
+	// Employee methods
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

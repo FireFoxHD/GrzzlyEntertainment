@@ -3,7 +3,9 @@ package models.com;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import factories.SessionFactoryBuilder;
 
 @Entity
 @Table(name = "event")
@@ -88,5 +95,50 @@ public class Event implements Serializable {
 	@Override
 	public String toString() {
 		return "Event [eventID=" + eventID + ", eventName=" + eventName + ", date=" + date + "]";
+	}
+
+	public void addEventToFile() {
+		Session session= SessionFactoryBuilder
+				.getSessionFactory()
+				.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		session.save(this);
+		transaction.commit();
+		session.clear();
+	}
+	public void update() {
+		Event event = new Event();
+		Session session= SessionFactoryBuilder
+				.getSessionFactory()
+				.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		event= (Event)session.get(Event.class,this.getEventID());
+		event.setEventName(event.getEventName());
+		transaction.commit();
+		session.close();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Event> readAll(){
+		List<Event> studentList = new ArrayList<>();
+		Session session= SessionFactoryBuilder
+				.getSessionFactory()
+				.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		studentList =(List<Event>) session.createQuery("FROM event").getResultList();
+		transaction.commit();
+		session.close();
+		return studentList;
+	}
+	
+	public void deleteEvent() {
+		Event event = new Event();
+		Session session= SessionFactoryBuilder
+				.getSessionFactory()
+				.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		event= (Event)session.get(Event.class,this.getEventID());
+		event.setEventName(event.getEventName());
+		transaction.commit();
+		session.clear();
 	}
 }

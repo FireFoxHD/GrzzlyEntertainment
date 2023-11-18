@@ -17,7 +17,7 @@ import models.com.Employee;
 import models.com.Equipment;
 import models.com.Message;
 import models.com.RentalRequest;
-import models.com.Transaction;
+import models.com.TransactionClass;
 
 public class ThreadedClass implements Runnable {
 	private ObjectOutputStream objOs;
@@ -30,7 +30,7 @@ public class ThreadedClass implements Runnable {
 	Employee empObj;
 	Equipment equObj;
 	Message messObj;
-	Transaction tranObj;
+	TransactionClass tranObj;
 	RentalRequest rentalReqObj;
 
 	
@@ -88,7 +88,7 @@ public class ThreadedClass implements Runnable {
 				this.addMessage(messObj);
 				objOs.writeObject(true);
 			} else if (action.equalsIgnoreCase("Add Transaction")) {
-				tranObj = (Transaction) objIs.readObject();
+				tranObj = (TransactionClass) objIs.readObject();
 				this.addTransactionToFile(tranObj);
 				objOs.writeObject(true);
 			} else if (action.equalsIgnoreCase("Add Rental Request")) {
@@ -329,7 +329,7 @@ public class ThreadedClass implements Runnable {
 		return messObj;
 	}
 
-	public void addTransactionToFile(Transaction transaction) {
+	public void addTransactionToFile(TransactionClass transaction) {
 		String sql = "INSERT INTO grizzlyequipment.transaction(transactionId,customerID,requestID,transactionDate,amountPaid)"
 				+ " VALUES('" + transaction.getTransactionID() + "','" + transaction.getCustomerID() + "','"
 				+ transaction.getRequestID() + "','" + transaction.getTransactionDate() + "','"
@@ -350,8 +350,8 @@ public class ThreadedClass implements Runnable {
 		}
 	}
 
-	private Transaction findTransactionById(String id) {
-		Transaction tranObj = new Transaction();
+	private TransactionClass findTransactionById(String id) {
+		TransactionClass tranObj = new TransactionClass();
 		String query = "SELECT * FROM grizzlyequipment.transaction WHERE transactionID =" + id;
 		try {
 			stmt = AppServer.getDatabaseConnection().createStatement();

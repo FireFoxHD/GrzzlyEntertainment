@@ -11,7 +11,7 @@ public class SessionFactoryBuilder {
 	public static SessionFactory getSessionFactory() {
 		if(sessionFactory==null) {
 			sessionFactory = new Configuration()
-					.configure("hibernate.cfg.xml")
+					.configure("/finalProjectServer/resources/hibernate.cfg.xml")
 					.addAnnotatedClass(Event.class).buildSessionFactory();
 		}
 		return sessionFactory;
