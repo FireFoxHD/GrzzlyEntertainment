@@ -13,12 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.swing.JOptionPane;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import models.com.Customer;
 import models.com.Employee;
@@ -30,7 +31,7 @@ import models.com.Transaction;
 
 public class AppServer {
 
-	private static Logger serverLogger =(Logger) LogManager.getLogger(AppServer.class.getName());
+	private static final Logger serverLogger = LogManager.getLogger(AppServer.class.getName());
 	private static Connection dbConn = null;
 	private ServerSocket serverSocket;
 	private Socket connectionSocket;
@@ -127,8 +128,8 @@ public class AppServer {
 			if (result.next()) {
 				custObj.setCustomerID(result.getString(1));
 				custObj.setUsername(result.getString(2));
-				;
 				custObj.setPassword(result.getString(3));
+				custObj.setAccountBalance(result.getDouble(4));
 
 			}
 		} catch (SQLException e) {
@@ -176,11 +177,10 @@ public class AppServer {
 		return empObj;
 	}
 
-	// add cost per day
 	void addEquipmentToFile(Equipment equipment) {
 		String sql = "INSERT INTO grizzlyequipment.equipment(equipmentID,equipmentName,equipmentCategory,isAvailable)"
 				+ " VALUES('" + equipment.getEquipmentID() + "','" + equipment.getEquipmentName() + "','"
-				+ equipment.getEquipmentCategory() + "','" + equipment.isAvailabilityStatus() + "');";
+				+ equipment.getEquipmentCategory() + "','" + equipment.isAvailabilityStatus() + "','" +equipment.getPrice()+"');";
 		try {
 			stmt = dbConn.createStatement();
 
@@ -479,8 +479,6 @@ public class AppServer {
 		}
 	}
 
-	
-
 	public Queue<Equipment> viewEquipmentByCategory(String category) {
 		Queue<Equipment> listEquipment = new LinkedList<>();
 
@@ -516,48 +514,54 @@ public class AppServer {
 		return listEquipment;
 	}
 
-//	private Queue<Equipment> viewEquipmentByCategory (String category)
-//	{
-//		int count = 0;
-//		boolean found = false;
-//		Equipment equipment = new Equipment();
-//		Queue<Equipment> listEquipment = new LinkedList<Equipment>();
-//		String query = "SELECT * FROM equipment WHERE equipment_category  = '"+category+"' ";
-//
-//		try
-//		{
-//			stmt = dbConn.createStatement();
-//			result = stmt.executeQuery(query);
-//			
-//			while(result.next())
-//			{
-//				equipment.setEquipmentID(result.getString(1));
-//				equipment.setEquipmentName(result.getString(2));
-//				equipment.setEquipmentCategory(result.getString(3));
-//				equipment.setAvailabilityStatus(result.getBoolean(4));
-//				
-//				
-//				listEquipment.add(equipment);
-//				if(equipment.getEquipmentCategory().equals(category))
-//				{
-//					found = true;
-//				}
-//				equipment = new Equipment();
-//			}
-//			if(found==true)
-//			{
-//				JOptionPane.showMessageDialog(null, "Found equipment","Equipment Status", JOptionPane.INFORMATION_MESSAGE);
-//			}
-//			else
-//			{
-//				JOptionPane.showMessageDialog(null, "Not Found!","status", JOptionPane.ERROR_MESSAGE);
-//			}
-//		}
-//		catch(SQLException e)
-//		{
-//			e.printStackTrace();
-//		}
-//		return listEquipment;
-//	}
+	public void viewSingleTransactionAllDetails() {
+		
+	}
 
+	//Employee methods
+	public void createQuotation() {
+		
+	}
+	public void creatReceipt() {
+		
+	}
+	public void createInvoice() {
+		
+	}
+	public void customerSignIn() {
+		
+	}
+	public void respondToMessages() {
+		
+	}
+	public void ScheduleEquipmentsForEvent() {
+		
+	}
+	public void viewAllMessages() {
+		
+	}
+	public void viewEquipmnentStock() {
+		
+	}
+	public List<RentalRequest> viewListOfRentalRequest(){
+		return null;
+		
+	}
+	//Employee methods
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -17,7 +17,7 @@ public class FinalClientDriver {
 //		System.out.println("Response recieved from server");
 //		
 		client.sendAction("Find Customer");
-		client.sendCustomerId("1017");
+		client.sendCustomerId("11001");
 		client.receiveResponse();
 		
 		client.closeConnection();

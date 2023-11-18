@@ -2,7 +2,7 @@ package view;
 
 import javax.swing.JFrame;
 
-public class CustomerSignIn extends JFrame {
+public class EmployeeSignIn extends JFrame {
 
 	/**
 	 * 
