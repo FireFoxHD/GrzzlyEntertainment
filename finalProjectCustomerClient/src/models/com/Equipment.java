@@ -1,0 +1,69 @@
+package models.com;
+
+import java.io.Serializable;
+
+public class Equipment implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String equipmentID;
+    private String equipmentName;
+    private String equipmentCategory;
+    private boolean isAvailable;
+    // Other equipment attributes, getters, setters, and methods
+	public Equipment() {
+	    	
+	}
+    
+    
+    public Equipment(Equipment equipment) {
+    	this.equipmentID = equipment.equipmentID;
+		this.equipmentName = equipment.equipmentName;
+		this.equipmentCategory = equipment.equipmentCategory;
+		this.isAvailable = equipment.isAvailable;
+    }
+	/**
+	 * @param equipmentID
+	 * @param equipmentName
+	 * @param equipmentCategory
+	 * @param availabilityStatus
+	 */
+	public Equipment(String equipmentID, String equipmentName, String equipmentCategory, boolean availabilityStatus) {
+		
+		this.equipmentID = equipmentID;
+		this.equipmentName = equipmentName;
+		this.equipmentCategory = equipmentCategory;
+		this.isAvailable = availabilityStatus;
+	}
+	public String getEquipmentID() {
+		return equipmentID;
+	}
+	public void setEquipmentID(String equipmentID) {
+		this.equipmentID = equipmentID;
+	}
+	public String getEquipmentName() {
+		return equipmentName;
+	}
+	public void setEquipmentName(String equipmentName) {
+		this.equipmentName = equipmentName;
+	}
+	public String getEquipmentCategory() {
+		return equipmentCategory;
+	}
+	public void setEquipmentCategory(String equipmentCategory) {
+		this.equipmentCategory = equipmentCategory;
+	}
+	public boolean isAvailabilityStatus() {
+		return isAvailable;
+	}
+	public void setAvailabilityStatus(boolean availabilityStatus) {
+		this.isAvailable = availabilityStatus;
+	}
+	@Override
+	public String toString() {
+		return "Equipment [equipmentID=" + equipmentID + ", equipmentName=" + equipmentName + ", equipmentCategory="
+				+ equipmentCategory + ", availabilityStatus=" + isAvailable + "]";
+	}
+    
+}
