@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 
 public class WelcomeParentWindow extends JFrame {
 
@@ -29,7 +30,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new CreateQuotation());
             }
         });
-        fileMenu.add(createQuotationMenuItem);
+        
 
         JMenu createInvoiceMenuItem = new JMenu("Create Invoice");
         createInvoiceMenuItem.addActionListener(new ActionListener() {
@@ -38,7 +39,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new CreateInvoice());
             }
         });
-        fileMenu.add(createInvoiceMenuItem);
+        
 
         JMenu createReceiptMenuItem = new JMenu("Create Receipt");
         createReceiptMenuItem.addActionListener(new ActionListener() {
@@ -47,7 +48,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new CreateReceipt());
             }
         });
-        fileMenu.add(createReceiptMenuItem);
+        
 
         JMenu employeeSignInMenuItem = new JMenu("Employee Sign In");
         employeeSignInMenuItem.addActionListener(new ActionListener() {
@@ -56,7 +57,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new EmployeeSignIn());
             }
         });
-        fileMenu.add(employeeSignInMenuItem);
+        
 
         JMenu respondToMessageMenuItem = new JMenu("Respond To Message");
         respondToMessageMenuItem.addActionListener(new ActionListener() {
@@ -65,7 +66,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new RespondToMessage("Sample message"));
             }
         });
-        fileMenu.add(respondToMessageMenuItem);
+        
 
         JMenu viewAllMessagesMenuItem = new JMenu("View All Messages");
         viewAllMessagesMenuItem.addActionListener(new ActionListener() {
@@ -75,7 +76,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new ViewAllMessages(messages));
             }
         });
-        fileMenu.add(viewAllMessagesMenuItem);
+       
 
         JMenu viewEquipmentStockMenuItem = new JMenu("View Equipment Stock");
         viewEquipmentStockMenuItem.addActionListener(new ActionListener() {
@@ -86,7 +87,7 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new ViewEquipmentStock(equipmentData, columnNames));
             }
         });
-        fileMenu.add(viewEquipmentStockMenuItem);
+       
 
         JMenu viewListOfRentalRequestMenuItem = new JMenu("View List Of Rental Requests");
         viewListOfRentalRequestMenuItem.addActionListener(new ActionListener() {
@@ -100,6 +101,7 @@ public class WelcomeParentWindow extends JFrame {
         fileMenu.add(viewListOfRentalRequestMenuItem);
 
         menuBar.add(fileMenu);
+        menuBar.add(employeeSignInMenuItem);
         setJMenuBar(menuBar);
 
         desktopPane = new JDesktopPane();
@@ -113,7 +115,7 @@ public class WelcomeParentWindow extends JFrame {
         desktopPane.add(internalFrame);
         try {
             internalFrame.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
+        } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
     }
