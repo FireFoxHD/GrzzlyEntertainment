@@ -1,12 +1,126 @@
 package view;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class WelcomeParentWindow extends JFrame {
 
-	/**
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JDesktopPane desktopPane;
 
+    public WelcomeParentWindow() {
+        setTitle("Welcome");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+
+        JMenu createQuotationMenuItem = new JMenu("Create Quotation");
+        createQuotationMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openInternalFrame(new CreateQuotation());
+            }
+        });
+        fileMenu.add(createQuotationMenuItem);
+
+        JMenu createInvoiceMenuItem = new JMenu("Create Invoice");
+        createInvoiceMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openInternalFrame(new CreateInvoice());
+            }
+        });
+        fileMenu.add(createInvoiceMenuItem);
+
+        JMenu createReceiptMenuItem = new JMenu("Create Receipt");
+        createReceiptMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openInternalFrame(new CreateReceipt());
+            }
+        });
+        fileMenu.add(createReceiptMenuItem);
+
+        JMenu employeeSignInMenuItem = new JMenu("Employee Sign In");
+        employeeSignInMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openInternalFrame(new EmployeeSignIn());
+            }
+        });
+        fileMenu.add(employeeSignInMenuItem);
+
+        JMenu respondToMessageMenuItem = new JMenu("Respond To Message");
+        respondToMessageMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openInternalFrame(new RespondToMessage("Sample message"));
+            }
+        });
+        fileMenu.add(respondToMessageMenuItem);
+
+        JMenu viewAllMessagesMenuItem = new JMenu("View All Messages");
+        viewAllMessagesMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] messages = {"Message 1", "Message 2", "Message 3"}; // Replace with actual messages
+                openInternalFrame(new ViewAllMessages(messages));
+            }
+        });
+        fileMenu.add(viewAllMessagesMenuItem);
+
+        JMenu viewEquipmentStockMenuItem = new JMenu("View Equipment Stock");
+        viewEquipmentStockMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object[][] equipmentData = {{"Equipment 1", 10}, {"Equipment 2", 15}, {"Equipment 3", 20}}; // Replace with actual data
+                String[] columnNames = {"Equipment Name", "Quantity"}; // Replace with actual column names
+                openInternalFrame(new ViewEquipmentStock(equipmentData, columnNames));
+            }
+        });
+        fileMenu.add(viewEquipmentStockMenuItem);
+
+        JMenu viewListOfRentalRequestMenuItem = new JMenu("View List Of Rental Requests");
+        viewListOfRentalRequestMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object[][] requestData = {{"John Doe", "Projector", "2023-11-20", "Pending"}, {"Alice Smith", "Microphone", "2023-11-25", "Approved"}, {"Bob Johnson", "Laptop", "2023-11-18", "Rejected"}}; // Replace with actual data
+                String[] columnNames = {"Requester", "Equipment", "Date", "Status"}; // Replace with actual column names
+                openInternalFrame(new ViewListOfRentalRequest(requestData, columnNames));
+            }
+        });
+        fileMenu.add(viewListOfRentalRequestMenuItem);
+
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);
+
+        desktopPane = new JDesktopPane();
+        add(desktopPane, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    private <T extends JInternalFrame> void openInternalFrame(T internalFrame) {
+        internalFrame.setVisible(true);
+        desktopPane.add(internalFrame);
+        try {
+            internalFrame.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new WelcomeParentWindow();
+        });
+    }
 }
