@@ -2,81 +2,70 @@ package multiThreadServer;
 
 import java.io.*;
 import java.net.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import models.com.Customer;
-import models.com.Employee;
+import javax.swing.JOptionPane;
 
 public class AppServer {
-	private ServerSocket serverSocket;
-	private Connection dbConn = null;
+    private static final int PORT = 8888;
+    private static ExecutorService pool = Executors.newFixedThreadPool(10);
+    private ServerSocket serverSocket;
+    private static Connection dbConn;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new AppServer();
-	}
+    public AppServer() {
+        createConnection();
+    }
 
-	public AppServer() {
-		this.createConnection();
-		this.waitForRequest();
-	}
+    private void createConnection() {
+        try {
+            serverSocket = new ServerSocket(PORT);
+            System.out.println("Server started...");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	private void createConnection() {
-		try {
-			serverSocket = new ServerSocket(8888);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		this.getDatabaseConnection();
-	}
+    public static Connection getDatabaseConnection() {
+        if (getDbConn() == null) {
+            String url = "jdbc:mysql://localhost:3306/dblab";
+            try {
+                setDbConn(DriverManager.getConnection(url, "root", ""));
+                JOptionPane.showMessageDialog(null, "DB connected");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "DB not connected");
+            }
+        }
+        return getDbConn();
+    }
+    private void waitForRequest() {
+        try {
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected: " + clientSocket);
 
-	private void waitForRequest() {
-		try {
-			while (true) {
-				Socket connectionSocket = serverSocket.accept();
-				ClientHandler clientHandler = new ClientHandler(connectionSocket, this);
-				Thread clientThread = new Thread(clientHandler);
-				clientThread.start();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+                // Create a new thread for each client
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                pool.execute(clientHandler);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public Connection getDatabaseConnection() {
-		// Database connection logic
+    public static Connection getDbConn() {
 		return dbConn;
 	}
 
-	public void addCustomerToFile(Customer cust) {
-		// TODO Auto-generated method stub
-
+	public static void setDbConn(Connection dbConn) {
+		AppServer.dbConn = dbConn;
 	}
 
-	public void addEmployeeToFile(Employee emp) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public static void main(String[] args) {
+        AppServer server = new AppServer();
+        server.waitForRequest();
+    }
 }
-
-//	private void waitForRequest() {
-//	    
-//	    getDatabaseConnection();
-//	    try {
-//	        while (true) {
-//	        	Socket connectionSocket = serverSocket.accept();
-//	        	ThreadedClass threadObj = new ThreadedClass(connectionSocket);
-//	        	Thread thread = new Thread(threadObj);
-//	        	thread.start();
-//	        	count = count+1;
-//	        	System.out.println("\nNumber of threads :"+count);
-//	        }
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	    }
-//	}
-
-//
-//
-//}
