@@ -8,10 +8,15 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import models.com.EquipmentStock;
+
 import models.com.*;
 
 public class Client {
+	private static final Logger serverLogger = LogManager.getLogger(Client.class.getName());
 	private Socket connectionSocket;
 	private ObjectOutputStream objOs;
 	private ObjectInputStream objIs;
@@ -33,6 +38,7 @@ public class Client {
 	}
 	private void createConnection() {
 		try {
+			serverLogger.info("No errors");
 			connectionSocket = new Socket("127.0.0.1", 8888);
 		}catch(IOException ex) {
 			ex.printStackTrace();
@@ -44,11 +50,13 @@ public class Client {
 			objOs = new ObjectOutputStream(connectionSocket.getOutputStream());
 		}catch(IOException ex) {
 			ex.printStackTrace();
+			serverLogger.error(ex);
 		}
 	}
 	
 	public void receiveResponse() {
 		try {
+			serverLogger.info("No errors");
 			if(action.equalsIgnoreCase("Add Customer")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if(flag == true) {
@@ -156,9 +164,12 @@ public class Client {
 			}
 		}catch(ClassCastException ex) {
 			ex.printStackTrace();
+			serverLogger.error(ex);
 		}catch(ClassNotFoundException ex) {
+			serverLogger.error(ex);
 			ex.printStackTrace();
 		}catch(IOException ex) {
+			serverLogger.error(ex);
 			ex.printStackTrace();
 		}
 	}
@@ -170,6 +181,7 @@ public class Client {
 			connectionSocket.close();
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -178,6 +190,7 @@ public class Client {
 			objOs.writeObject(customerObj);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -186,6 +199,7 @@ public class Client {
 			objOs.writeObject(employeeObj);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -194,6 +208,7 @@ public class Client {
 			objOs.writeObject(equipmentObj);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -202,6 +217,7 @@ public class Client {
 			objOs.writeObject(message);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -210,6 +226,7 @@ public class Client {
 			objOs.writeObject(transactionObj);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -218,6 +235,7 @@ public class Client {
 			objOs.writeObject(rentalRequestObj);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	
@@ -227,6 +245,7 @@ public class Client {
 			objOs.writeObject(action);
 		}catch(IOException e) {
 			e.printStackTrace();
+			serverLogger.error(e);
 		}
 	}
 	

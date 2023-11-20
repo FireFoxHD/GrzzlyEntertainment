@@ -17,8 +17,9 @@ import java.util.Queue;
 
 import javax.swing.JOptionPane;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import models.com.Customer;
 import models.com.Employee;
 import models.com.Equipment;
@@ -47,6 +48,7 @@ public class AppServer {
 
 	private void createConnection() {
 		try {
+			serverLogger.info("No errors");
 			serverSocket = new ServerSocket(8888);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -59,6 +61,7 @@ public class AppServer {
 		try {
 			objOs = new ObjectOutputStream(connectionSocket.getOutputStream());
 			objIs = new ObjectInputStream(connectionSocket.getInputStream());
+			serverLogger.info("No errors");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
