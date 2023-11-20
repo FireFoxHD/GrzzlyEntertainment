@@ -10,7 +10,12 @@ import java.util.concurrent.Executors;
 
 import javax.swing.JOptionPane;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 public class AppServer {
+	private static final Logger serverLogger = LogManager.getLogger(AppServer.class.getName());
     private static final int PORT = 8888;
     private static ExecutorService pool = Executors.newFixedThreadPool(10);
     private ServerSocket serverSocket;
@@ -26,6 +31,7 @@ public class AppServer {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server started...");
         } catch (IOException e) {
+        	serverLogger.error(e);
             e.printStackTrace();
         }
     }
@@ -34,10 +40,12 @@ public class AppServer {
         if (getDbConn() == null) {
             String url = "jdbc:mysql://localhost:3306/dblab";
             try {
+            	serverLogger.info("Successful");
                 setDbConn(DriverManager.getConnection(url, "root", ""));
                 JOptionPane.showMessageDialog(null, "DB connected");
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "DB not connected");
+                serverLogger.error(e);
             }
         }
         return getDbConn();
@@ -45,6 +53,7 @@ public class AppServer {
     private void waitForRequest() {
     	getDatabaseConnection();
         try {
+        	serverLogger.info("Successful");
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected: " + clientSocket);
@@ -55,6 +64,7 @@ public class AppServer {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            serverLogger.error(e);
         }
     }
 
@@ -67,7 +77,14 @@ public class AppServer {
 	}
 
 	public static void main(String[] args) {
-        AppServer server = new AppServer();
-        server.waitForRequest();
+        try {
+			new AppServer();
+			serverLogger.info("Successful");
+			//server.waitForRequest();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			serverLogger.error(e);
+		}
     }
 }
