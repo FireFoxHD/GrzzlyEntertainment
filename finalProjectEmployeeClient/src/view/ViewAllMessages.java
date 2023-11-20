@@ -45,9 +45,6 @@ public class ViewAllMessages extends JInternalFrame {
 
             // Example messages
             String[] messages = {
-                    "Message 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    "Message 2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "Message 3: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
                     // Add more messages as needed
             };
 

@@ -62,9 +62,9 @@ public class CreateReceipt extends JInternalFrame {
             String receiptContent = "-------------------\n" +
                                      "   RECEIPT\n" +
                                      "-------------------\n" +
-                                     "Item 1        $10.00\n" +
-                                     "Item 2        $20.00\n" +
-                                     "Item 3        $15.00\n" +
+                                     "Stage A        $10.00\n" +
+                                     "Stage Light    $20.00\n" +
+                                     "Sound Sys.     $15.00\n" +
                                      "-------------------\n" +
                                      "Total        $45.00\n" +
                                      "-------------------\n" +

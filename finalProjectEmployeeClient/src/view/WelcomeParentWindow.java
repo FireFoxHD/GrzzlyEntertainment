@@ -23,7 +23,7 @@ public class WelcomeParentWindow extends JFrame {
 
         JMenu fileMenu = new JMenu("File");
 
-        JMenu createQuotationMenuItem = new JMenu("Create Quotation");
+        JMenuItem createQuotationMenuItem = new JMenuItem("Create Quotation");
         createQuotationMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -32,7 +32,7 @@ public class WelcomeParentWindow extends JFrame {
         });
         
 
-        JMenu createInvoiceMenuItem = new JMenu("Create Invoice");
+        JMenuItem createInvoiceMenuItem = new JMenuItem("Create Invoice");
         createInvoiceMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -41,7 +41,7 @@ public class WelcomeParentWindow extends JFrame {
         });
         
 
-        JMenu createReceiptMenuItem = new JMenu("Create Receipt");
+        JMenuItem createReceiptMenuItem = new JMenuItem("Create Receipt");
         createReceiptMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,8 +50,8 @@ public class WelcomeParentWindow extends JFrame {
         });
         
 
-        JMenu employeeSignInMenuItem = new JMenu("Employee Sign In");
-        employeeSignInMenuItem.addActionListener(new ActionListener() {
+        JMenu employeeSignInMenu = new JMenu("Employee Sign In");
+        employeeSignInMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openInternalFrame(new EmployeeSignIn());
@@ -59,8 +59,8 @@ public class WelcomeParentWindow extends JFrame {
         });
         
 
-        JMenu respondToMessageMenuItem = new JMenu("Respond To Message");
-        respondToMessageMenuItem.addActionListener(new ActionListener() {
+        JMenu respondToMessageMenu = new JMenu("Respond To Message");
+        respondToMessageMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 openInternalFrame(new RespondToMessage("Sample message"));
@@ -68,8 +68,8 @@ public class WelcomeParentWindow extends JFrame {
         });
         
 
-        JMenu viewAllMessagesMenuItem = new JMenu("View All Messages");
-        viewAllMessagesMenuItem.addActionListener(new ActionListener() {
+        JMenu viewAllMessagesMenu = new JMenu("View All Messages");
+        viewAllMessagesMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String[] messages = {"Message 1", "Message 2", "Message 3"}; // Replace with actual messages
@@ -78,8 +78,8 @@ public class WelcomeParentWindow extends JFrame {
         });
        
 
-        JMenu viewEquipmentStockMenuItem = new JMenu("View Equipment Stock");
-        viewEquipmentStockMenuItem.addActionListener(new ActionListener() {
+        JMenu viewEquipmentStockMenu = new JMenu("View Equipment Stock");
+        viewEquipmentStockMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Object[][] equipmentData = {{"Equipment 1", 10}, {"Equipment 2", 15}, {"Equipment 3", 20}}; // Replace with actual data
@@ -89,8 +89,8 @@ public class WelcomeParentWindow extends JFrame {
         });
        
 
-        JMenu viewListOfRentalRequestMenuItem = new JMenu("View List Of Rental Requests");
-        viewListOfRentalRequestMenuItem.addActionListener(new ActionListener() {
+        JMenu viewListOfRentalRequestMenu = new JMenu("View List Of Rental Requests");
+        viewListOfRentalRequestMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Object[][] requestData = {{"John Doe", "Projector", "2023-11-20", "Pending"}, {"Alice Smith", "Microphone", "2023-11-25", "Approved"}, {"Bob Johnson", "Laptop", "2023-11-18", "Rejected"}}; // Replace with actual data
@@ -98,10 +98,16 @@ public class WelcomeParentWindow extends JFrame {
                 openInternalFrame(new ViewListOfRentalRequest(requestData, columnNames));
             }
         });
-        fileMenu.add(viewListOfRentalRequestMenuItem);
+        fileMenu.add(createInvoiceMenuItem);
+        fileMenu.add(createQuotationMenuItem);
+        fileMenu.add(createReceiptMenuItem);
 
         menuBar.add(fileMenu);
-        menuBar.add(employeeSignInMenuItem);
+        menuBar.add(employeeSignInMenu);
+        menuBar.add(respondToMessageMenu);
+        menuBar.add(viewAllMessagesMenu);
+        menuBar.add(viewEquipmentStockMenu);
+        menuBar.add(viewListOfRentalRequestMenu);
         setJMenuBar(menuBar);
 
         desktopPane = new JDesktopPane();

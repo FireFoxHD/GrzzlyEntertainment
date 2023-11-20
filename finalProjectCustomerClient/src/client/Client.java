@@ -27,6 +27,7 @@ public class Client {
 	public Client() {
 		this.createConnection();
 		this.configureStreams();
+		
 	}
 	private void createConnection() {
 		try {
@@ -374,5 +375,8 @@ public class Client {
 		}
 
 		return result;
+	}
+	public static void main(String[] args) {
+		new Client();
 	}
 }

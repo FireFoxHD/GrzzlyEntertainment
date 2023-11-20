@@ -43,7 +43,7 @@ public class ViewListOfRentalRequest extends JInternalFrame {
 
             // Example rental request data and column names
             Object[][] requestData = {
-                    {"John Doe", "Projector", "2023-11-20", "Pending"},
+                    {"John Doe", "Projector", "2023-11-20", "Rejected"},
                     {"Alice Smith", "Microphone", "2023-11-25", "Approved"},
                     {"Bob Johnson", "Laptop", "2023-11-18", "Rejected"},
                     // Add more rental request data as needed
