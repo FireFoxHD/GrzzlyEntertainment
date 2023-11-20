@@ -18,6 +18,7 @@ public class AppServer {
 
     public AppServer() {
         createConnection();
+        waitForRequest();
     }
 
     private void createConnection() {
@@ -42,6 +43,7 @@ public class AppServer {
         return getDbConn();
     }
     private void waitForRequest() {
+    	getDatabaseConnection();
         try {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
