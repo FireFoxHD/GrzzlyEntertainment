@@ -369,8 +369,7 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	
-	
+		
 	public void sendLoginDetails(int id, String username, String password) {
 		try {
             objOs.writeObject(id);
