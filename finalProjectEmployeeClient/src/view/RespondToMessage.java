@@ -1,13 +1,8 @@
 package view;
 
 import javax.swing.*;
-
-import client.com.Client;
-import models.com.Message;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class RespondToMessage extends JInternalFrame {
     /**
@@ -16,7 +11,6 @@ public class RespondToMessage extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private JTextArea messageTextArea;
     private JTextField customerIDField;
-    private JTextField employeeIDField;
     private JButton sendButton;
 
     public RespondToMessage() {
@@ -26,24 +20,9 @@ public class RespondToMessage extends JInternalFrame {
         messageTextArea = new JTextArea(10, 30);
         JScrollPane scrollPane = new JScrollPane(messageTextArea);
         customerIDField = new JTextField(10);
-        employeeIDField = new JTextField(10);
+        new JTextField(10);
         sendButton = new JButton("Send");
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Retrieve data from text fields
-                String customerID = customerIDField.getText();
-                String employeeID = employeeIDField.getText();
-                
-                 Client client = new Client();
-                 Message message = new Message();
-                 message.setCustomerID(customerIDField.getText());
-                 message.setEmployeeID(employeeIDField.getText());
-                 message.setMessageContent(messageTextArea.getText());
-                 client.sendAction("Add Message");
-                 client.sendMessage(message);
-            }
-        });
+   
 
         // Set layout
         setLayout(new BorderLayout());
@@ -52,8 +31,6 @@ public class RespondToMessage extends JInternalFrame {
         JPanel fieldsPanel = new JPanel(new FlowLayout());
         fieldsPanel.add(new JLabel("Customer ID:"));
         fieldsPanel.add(customerIDField);
-        fieldsPanel.add(new JLabel("Employee ID:"));
-        fieldsPanel.add(employeeIDField);
 
         // Add components to the internal frame
         add(fieldsPanel, BorderLayout.NORTH);

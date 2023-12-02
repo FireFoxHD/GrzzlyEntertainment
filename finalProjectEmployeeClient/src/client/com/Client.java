@@ -8,12 +8,12 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import models.com.EquipmentStock;
+import models.com.Inventory;
 
 import models.com.*;
 
 public class Client {
-//	private static final Logger serverLogger = LogManager.getLogger(Client.class.getName());
+
 	private Socket connectionSocket;
 	private ObjectOutputStream objOs;
 	private ObjectInputStream objIs;
@@ -35,7 +35,6 @@ public class Client {
 	}
 	private void createConnection() {
 		try {
-//			serverLogger.info("No errors");
 			connectionSocket = new Socket("127.0.0.1", 8888);
 		}catch(IOException ex) {
 			ex.printStackTrace();
@@ -53,7 +52,7 @@ public class Client {
 	
 	public void receiveResponse() {
 		try {
-//			serverLogger.info("No errors");
+
 			if(action.equalsIgnoreCase("Add Customer")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if(flag == true) {
@@ -93,8 +92,8 @@ public class Client {
 				}
 			}
 			if(action.equalsIgnoreCase("Find Message")) {
-				Message message = new Message();
-				message =(Message)objIs.readObject();
+				CustomerMessage message = new CustomerMessage();
+				message =(CustomerMessage)objIs.readObject();
 				if(message==null) {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
@@ -161,12 +160,12 @@ public class Client {
 			}
 		}catch(ClassCastException ex) {
 			ex.printStackTrace();
-//			serverLogger.error(ex);
+
 		}catch(ClassNotFoundException ex) {
-//			serverLogger.error(ex);
+
 			ex.printStackTrace();
 		}catch(IOException ex) {
-//			serverLogger.error(ex);
+
 			ex.printStackTrace();
 		}
 	}
@@ -209,7 +208,7 @@ public class Client {
 		}
 	}
 	
-	public void sendMessage(Message message) {
+	public void sendMessage(CustomerMessage message) {
 		try {
 			objOs.writeObject(message);
 		}catch(IOException e) {
@@ -312,8 +311,6 @@ public class Client {
             e.printStackTrace();
         }
 	}
-	
-	// Winroy Jennings
 	// For View Available Equipment
 	public void viewAllAvailableEquipmentsResponse(String category) {
 		try {
@@ -374,7 +371,6 @@ public class Client {
 
 		return result;
 	}
-
 	// Transaction Section
 	public boolean receiveTransactionStatus() {
 		boolean result = false;
@@ -388,11 +384,11 @@ public class Client {
 		return result;
 	}
 	@SuppressWarnings("unchecked")
-	public List<EquipmentStock> viewEquipmentInventoryResponse() {
-		List<EquipmentStock> result = null;
+	public List<Inventory> viewEquipmentInventoryResponse() {
+		List<Inventory> result = null;
 
 		try {
-			result = (List<EquipmentStock>) objIs.readObject();
+			result = (List<Inventory>) objIs.readObject();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}

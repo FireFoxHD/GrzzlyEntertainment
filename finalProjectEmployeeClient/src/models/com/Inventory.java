@@ -2,7 +2,7 @@ package models.com;
 
 import java.io.Serializable;
 
-public class EquipmentStock implements Serializable {
+public class Inventory implements Serializable {
 
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class EquipmentStock implements Serializable {
 	/**
 	 * 
 	 */
-	public EquipmentStock() {
+	public Inventory() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -26,7 +26,7 @@ public class EquipmentStock implements Serializable {
 	 * @param quantityAvailable
 	 * @param equipmentCategory
 	 */
-	public EquipmentStock(String equipmentStockID, String equipmentID, int quantityAvailable, String equipmentCategory) {
+	public Inventory(String equipmentStockID, String equipmentID, int quantityAvailable, String equipmentCategory) {
 		super();
 		this.equipmentStockID = equipmentStockID;
 		this.equipmentID = equipmentID;
@@ -34,7 +34,7 @@ public class EquipmentStock implements Serializable {
 		this.equipmentCategory = equipmentCategory;
 	}
 	
-	public EquipmentStock(EquipmentStock equipmentStock) {
+	public Inventory(Inventory equipmentStock) {
 		super();
 		this.equipmentStockID = equipmentStock.equipmentStockID;
 		this.equipmentID = equipmentStock.equipmentID;
