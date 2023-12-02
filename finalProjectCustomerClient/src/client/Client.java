@@ -8,15 +8,20 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import models.com.EquipmentStock;
+import models.com.Inventory;
+
 import models.com.*;
 
 public class Client {
+
 	private Socket connectionSocket;
-	private static ObjectOutputStream objOs;
+	private ObjectOutputStream objOs;
 	private ObjectInputStream objIs;
 	private String action = "";
 	private boolean isLogin;
+	
+	//need to log client side the minute you see this
+	
 	
 	public boolean isLoginStatus() {
 		return isLogin;
@@ -27,7 +32,6 @@ public class Client {
 	public Client() {
 		this.createConnection();
 		this.configureStreams();
-		
 	}
 	private void createConnection() {
 		try {
@@ -42,11 +46,13 @@ public class Client {
 			objOs = new ObjectOutputStream(connectionSocket.getOutputStream());
 		}catch(IOException ex) {
 			ex.printStackTrace();
+
 		}
 	}
 	
 	public void receiveResponse() {
 		try {
+
 			if(action.equalsIgnoreCase("Add Customer")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if(flag == true) {
@@ -56,11 +62,21 @@ public class Client {
 			}
 			if(action.equalsIgnoreCase("Find Customer")) {
 				Customer customer = new Customer();
+				customer=null;
 				customer =(Customer)objIs.readObject();
 				if(customer==null) {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
+				System.out.println(customer);
 			}
+			if(action.equalsIgnoreCase("Update Customer")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Customer")) {
+				
+			}
+			
+			
 			
 			if(action.equalsIgnoreCase("Add Equipment")) {
 				Boolean flag = (Boolean) objIs.readObject();
@@ -76,6 +92,16 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update Equipment")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Equipment")) {
+				
+			}
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Message")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if(flag == true) {
@@ -90,6 +116,16 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update CustomerMessage")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete CustomerMessage")) {
+				
+			}
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Transaction")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if (flag) {
@@ -104,6 +140,17 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update Transaction")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Transaction")) {
+				
+			}
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Rental Request")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if (flag) {
@@ -112,12 +159,23 @@ public class Client {
 				}
 			}
 			if(action.equalsIgnoreCase("Find Rental Request")) {
-				RentalRequest rentalRequest = new RentalRequest();
-				rentalRequest =(RentalRequest)objIs.readObject();
-				if(rentalRequest==null) {
+				RentalRequest rentalReq = new RentalRequest();
+				rentalReq =(RentalRequest)objIs.readObject();
+				if(rentalReq==null) {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update Rental Request")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Rental Request")) {
+				
+			}
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Employee")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if (flag) {
@@ -132,7 +190,43 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "Record could not be found", "Find Record Status", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				System.out.println(employee);
 			}
+			if(action.equalsIgnoreCase("Update Employee")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Employee")) {
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			if(action.equalsIgnoreCase("Add Event")) {
+				Boolean flag = (Boolean) objIs.readObject();
+				isLogin = flag;
+			}
+			if(action.equalsIgnoreCase("Find Event")) {
+				Boolean flag = (Boolean) objIs.readObject();
+				isLogin = flag;
+			}
+			if(action.equalsIgnoreCase("Update Event")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Event")) {
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Customer Login")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				isLogin = flag;
@@ -143,9 +237,12 @@ public class Client {
 			}
 		}catch(ClassCastException ex) {
 			ex.printStackTrace();
+
 		}catch(ClassNotFoundException ex) {
+
 			ex.printStackTrace();
 		}catch(IOException ex) {
+
 			ex.printStackTrace();
 		}
 	}
@@ -217,7 +314,7 @@ public class Client {
 		}
 	}
 	
-	public void sendCustomerId(int customerId) {
+	public void sendCustomerId(String customerId) {
 		try {
 			objOs.writeObject(customerId);
 		}catch(IOException e) {
@@ -225,7 +322,7 @@ public class Client {
 		}
 	}
 	
-	public void sendEmployeeId(int employeeId) {
+	public void sendEmployeeId(String employeeId) {
 		try {
 			objOs.writeObject(employeeId);
 		}catch(IOException e) {
@@ -233,7 +330,7 @@ public class Client {
 		}
 	}
 	
-	public void sendEquipmentId(int equipmentId) {
+	public void sendEquipmentId(String equipmentId) {
 		try {
 			objOs.writeObject(equipmentId);
 		}catch(IOException e) {
@@ -283,7 +380,6 @@ public class Client {
             e.printStackTrace();
         }
 	}
-	
 	// For View Available Equipment
 	public void viewAllAvailableEquipmentsResponse(String category) {
 		try {
@@ -307,13 +403,6 @@ public class Client {
 	}
 
 	// For Rent Available Equipment
-	public void sendEquipmentId(String equipmentID) {
-		try {
-			objOs.writeObject(equipmentID);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public boolean receiveEquipmentValidation() {
 		boolean result = false;
@@ -351,7 +440,6 @@ public class Client {
 
 		return result;
 	}
-
 	// Transaction Section
 	public boolean receiveTransactionStatus() {
 		boolean result = false;
@@ -365,11 +453,11 @@ public class Client {
 		return result;
 	}
 	@SuppressWarnings("unchecked")
-	public List<EquipmentStock> viewEquipmentInventoryResponse() {
-		List<EquipmentStock> result = null;
+	public List<Inventory> viewEquipmentInventoryResponse() {
+		List<Inventory> result = null;
 
 		try {
-			result = (List<EquipmentStock>) objIs.readObject();
+			result = (List<Inventory>) objIs.readObject();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
@@ -377,6 +465,7 @@ public class Client {
 		return result;
 	}
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub	
 		new Client();
 	}
 }

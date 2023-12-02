@@ -46,7 +46,7 @@ public class Client {
 			objOs = new ObjectOutputStream(connectionSocket.getOutputStream());
 		}catch(IOException ex) {
 			ex.printStackTrace();
-//			serverLogger.error(ex);
+
 		}
 	}
 	
@@ -69,6 +69,14 @@ public class Client {
 				}
 				System.out.println(customer);
 			}
+			if(action.equalsIgnoreCase("Update Customer")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Customer")) {
+				
+			}
+			
+			
 			
 			if(action.equalsIgnoreCase("Add Equipment")) {
 				Boolean flag = (Boolean) objIs.readObject();
@@ -84,6 +92,16 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update Equipment")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Equipment")) {
+				
+			}
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Message")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if(flag == true) {
@@ -98,6 +116,16 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update CustomerMessage")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete CustomerMessage")) {
+				
+			}
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Transaction")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if (flag) {
@@ -112,6 +140,17 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update Transaction")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Transaction")) {
+				
+			}
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Rental Request")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if (flag) {
@@ -126,6 +165,17 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			if(action.equalsIgnoreCase("Update Rental Request")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Rental Request")) {
+				
+			}
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Employee")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				if (flag) {
@@ -142,6 +192,19 @@ public class Client {
 				}
 				System.out.println(employee);
 			}
+			if(action.equalsIgnoreCase("Update Employee")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Employee")) {
+				
+			}
+			
+			
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Add Event")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				isLogin = flag;
@@ -150,6 +213,20 @@ public class Client {
 				Boolean flag = (Boolean) objIs.readObject();
 				isLogin = flag;
 			}
+			if(action.equalsIgnoreCase("Update Event")) {
+				
+			}
+			if(action.equalsIgnoreCase("Delete Event")) {
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
 			if(action.equalsIgnoreCase("Customer Login")) {
 				Boolean flag = (Boolean) objIs.readObject();
 				isLogin = flag;
@@ -177,7 +254,6 @@ public class Client {
 			connectionSocket.close();
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -186,7 +262,6 @@ public class Client {
 			objOs.writeObject(customerObj);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -195,7 +270,6 @@ public class Client {
 			objOs.writeObject(employeeObj);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -204,7 +278,6 @@ public class Client {
 			objOs.writeObject(equipmentObj);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -213,7 +286,6 @@ public class Client {
 			objOs.writeObject(message);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -222,7 +294,6 @@ public class Client {
 			objOs.writeObject(transactionObj);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -231,7 +302,6 @@ public class Client {
 			objOs.writeObject(rentalRequestObj);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
@@ -241,7 +311,6 @@ public class Client {
 			objOs.writeObject(action);
 		}catch(IOException e) {
 			e.printStackTrace();
-//			serverLogger.error(e);
 		}
 	}
 	
