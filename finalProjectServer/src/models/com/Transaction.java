@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class TransactionClass implements Serializable{
+public class Transaction implements Serializable{
     /**
 	 * 
 	 */
@@ -17,11 +17,11 @@ public class TransactionClass implements Serializable{
     private Date transactionDate;
     private double amountPaid;
     
-    public TransactionClass() {
+    public Transaction() {
     	
     }
     
-    public TransactionClass(TransactionClass transaction) {
+    public Transaction(Transaction transaction) {
 		super();
 		this.transactionID = transaction.transactionID;
 		this.customerID = transaction.customerID;
@@ -36,7 +36,7 @@ public class TransactionClass implements Serializable{
 	 * @param transactionDate
 	 * @param amountPaid
 	 */
-    public TransactionClass(String transactionID, String customerID, String requestID, String transactionDate, double amountPaid) {
+    public Transaction(String transactionID, String customerID, String requestID, String transactionDate, double amountPaid) {
         this.transactionID = transactionID;
         this.customerID = customerID;
         this.requestID = requestID;

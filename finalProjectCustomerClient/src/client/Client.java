@@ -84,8 +84,8 @@ public class Client {
 				}
 			}
 			if(action.equalsIgnoreCase("Find Message")) {
-				Message message = new Message();
-				message =(Message)objIs.readObject();
+				CustomerMessage message = new CustomerMessage();
+				message =(CustomerMessage)objIs.readObject();
 				if(message==null) {
 					JOptionPane.showMessageDialog(null, "No record found","status",JOptionPane.ERROR_MESSAGE);
 				}
@@ -184,7 +184,7 @@ public class Client {
 		}
 	}
 	
-	public void sendMessage(Message message) {
+	public void sendMessage(CustomerMessage message) {
 		try {
 			objOs.writeObject(message);
 		}catch(IOException e) {

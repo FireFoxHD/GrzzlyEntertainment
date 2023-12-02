@@ -1,6 +1,10 @@
 package client.com;
 
 import models.com.Customer;
+import models.com.Equipment;
+import models.com.Message;
+import models.com.RentalRequest;
+import models.com.Transaction;
 
 @SuppressWarnings("unused")
 public class FinalClientDriver {
@@ -8,6 +12,7 @@ public class FinalClientDriver {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub	
 		Client client = new Client();
+
 //		Customer customer = new Customer("11001","JPatterson","0000",2000.0);
 //		client.sendAction("Add Customer");
 //		System.out.println("Message sent to server");

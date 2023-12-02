@@ -5,8 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EmployeeSignIn extends JInternalFrame {
-
+public class EmployeeSignIn extends JFrame {
     /**
 	 * 
 	 */
@@ -16,68 +15,48 @@ public class EmployeeSignIn extends JInternalFrame {
 
     public EmployeeSignIn() {
         setTitle("Employee Sign In");
-        setClosable(true);
-        setMaximizable(true);
-        setResizable(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 150);
+        setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
 
         JLabel usernameLabel = new JLabel("Username:");
-        panel.add(usernameLabel);
-
-        usernameField = new JTextField();
-        panel.add(usernameField);
-
         JLabel passwordLabel = new JLabel("Password:");
-        panel.add(passwordLabel);
-
+        usernameField = new JTextField();
         passwordField = new JPasswordField();
-        panel.add(passwordField);
 
         JButton signInButton = new JButton("Sign In");
         signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
-                String password = String.valueOf(passwordField.getPassword());
-
-                // Dummy validation for demonstration
-                if (username.equals("employee") && password.equals("password")) {
-                    JOptionPane.showMessageDialog(EmployeeSignIn.this, "Login successful!");
-                    // Perform actions after successful login
+                // For demo purposes, just check if fields are not empty
+                if (!username.isEmpty() && passwordField.getPassword().length > 0) {
+                    // Assuming successful sign-in; create and show ParentWindow
+                    new ParentWindow();
+                    //dispose(); // Close sign-in page after successful sign-in
                 } else {
-                    JOptionPane.showMessageDialog(EmployeeSignIn.this, "Invalid username or password!");
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid username or password",
+                            "Sign In Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
+        panel.add(usernameLabel);
+        panel.add(usernameField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
         panel.add(signInButton);
 
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        panel.add(cancelButton);
-
-        setContentPane(panel);
+        add(panel);
         setVisible(true);
     }
 
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Employee Sign In");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            EmployeeSignIn employeeSignIn = new EmployeeSignIn();
-            frame.add(employeeSignIn);
-            employeeSignIn.setVisible(true);
-
-            frame.setSize(300, 200);
-            frame.setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new EmployeeSignIn());
     }
 }
-
